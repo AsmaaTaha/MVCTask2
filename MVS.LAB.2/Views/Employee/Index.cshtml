@@ -1,0 +1,52 @@
+﻿@model List<Employee>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "All Employee";
+}
+    <div class="container"> 
+        @Html.ActionLink("Add New Employee","Add",null,new { @class="btn btn-primary"})
+        <table class="table table-hover table-striped">
+            <tr>
+
+                <th>Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (Employee d in Model)
+            {
+                <tr>
+                    <td>@d.Id</td>
+                    <td>@d.Name</td>
+                    <td>@d.Salary</td>
+                    <td><button type="button" class="btn btn-danger" onclick=DeleteEmployee(@d.Id)>Delete</button></td>
+                    <td><button type="button" class="btn btn-success" onclick=EditEmployee(@d.Id)>Edit</button></td>
+                </tr>
+            }
+        </table>  
+    </div>
+
+@section scripts
+{
+    <script>
+
+    function DeleteEmployee(id)
+        {
+        let result = confirm("Are you sure ? ");
+        if (result)
+        {
+            location.href = "/Employee/Delete/" + id;
+        }
+    }
+    function EditEmployee(id) {
+        let result = confirm("Are you sure ? ");
+        if (result) {
+            location.href = "/Employee/Edit/" + id;
+        }
+    }
+    </script>
+
+
+}
