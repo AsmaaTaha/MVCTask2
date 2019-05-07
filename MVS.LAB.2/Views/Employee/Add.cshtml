@@ -1,4 +1,4 @@
-﻿@model Employee
+﻿@model EmployeeViewModel
     @{ 
         Layout = "~/Views/Shared/_Layout.cshtml";
         ViewBag.Title = "Add Employee";
@@ -13,17 +13,27 @@
             {
             <div class="form-group">
          
-                @Html.LabelFor(e=>e.Name)
-                @Html.TextBoxFor(e => e.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(e=>e.Name)
+                @Html.LabelFor(e=>e.Employee.Name)
+                @Html.TextBoxFor(e => e.Employee.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(e=> e.Employee.Name)
             </div>
             <div class="form-group">
-                @Html.LabelFor(e => e.Salary)
-                @Html.TextBoxFor(e=>e.Salary,new { @class = "form-control" })
-                @Html.ValidationMessageFor(e => e.Salary)
+                @Html.LabelFor(e => e.Employee.Salary)
+                @Html.TextBoxFor(e=>e.Employee.Salary,new { @class = "form-control" })
+                @Html.ValidationMessageFor(e => e.Employee.Salary)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(e => e.Employee.Gender)
+                @Html.EnumDropDownListFor(e => e.Employee.Gender,"Select Gender", new { @class = "form-control" })
+                @Html.ValidationMessageFor(e => e.Employee.Gender)
+            </div>
+            <div class="form-group">
+                <label>Department</label>
+                @Html.DropDownListFor(e => e.Employee.Dept_FK, new SelectList(Model.AllDepartments,"Id","Name"),new { @class = "form-control" })
+                @Html.ValidationMessageFor(e => e.Employee.Dept_FK)
             </div>
             <button type="submit" class="btn btn-primary">Add</button>
-    }
+                    }
         </div>
     </div>
 @section styles

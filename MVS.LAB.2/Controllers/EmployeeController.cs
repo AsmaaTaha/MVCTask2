@@ -1,4 +1,5 @@
 ﻿using MVS.LAB._2.Models;
+using MVS.LAB._2.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,28 @@ namespace MVS.LAB._2.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            TempData["status"] ="Add";
+            EmployeeViewModel employeeVM = new EmployeeViewModel
+            {
+                AllDepartments = context.Departments.ToList(),
+            };
+            return View("AddAndEditForm", employeeVM);
         }
         [HttpPost]
-        public ActionResult Add(Employee e)
+        public ActionResult Add(Employee Employee)
         {
+            EmployeeViewModel employeeVM = new EmployeeViewModel
+            {
+                //AllDepartments = context.Departments.ToList(),
+                Employee = Employee
+            };
             if (ModelState.IsValid)
             {
-                context.Employees.Add(e);
+                context.Employees.Add(employeeVM.Employee);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(e);
+            return View("AddAndEditForm", employeeVM);
         }
         public ActionResult Delete(int id)
         {
@@ -43,24 +54,38 @@ namespace MVS.LAB._2.Controllers
             }
             return View();
         }
- 
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Employee res = context.Employees.Find(id);
-            if (res != null)
+            TempData["status"] = "Edit";
+
+            EmployeeViewModel employeeVM = new EmployeeViewModel
             {
-            return View(res);
+                Employee = context.Employees.Find(id),
+                AllDepartments = context.Departments.ToList(),
+            };
+            if (employeeVM.Employee != null)
+            {
+                return View("AddAndEditForm", employeeVM);
             }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public ActionResult Edit(Employee e)
+        public ActionResult Edit(Employee Employee)
         {
-            Employee res = context.Employees.FirstOrDefault(emp=>emp.Id==e.Id);
-            res.Name = e.Name;
-            res.Salary = e.Salary;
+            //EmployeeViewModel employeeVM = new EmployeeViewModel
+            //{
+            //    AllDepartments = context.Departments.ToList(),
+            //    Employee = e
+            //};
+            var x = ViewBag.EmployeeId;
+            Employee res = context.Employees.FirstOrDefault(emp => emp.Id == Employee.Id);
+            res.Name = Employee.Name;
+            res.Salary = Employee.Salary;
+            res.Dept_FK = Employee.Dept_FK;
+            res.Gender = Employee.Gender;
             context.SaveChanges();
             return RedirectToAction("Index");
 
